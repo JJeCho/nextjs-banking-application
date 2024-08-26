@@ -89,7 +89,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 label="Password"
                 placeholder="Enter your password"
               />
-              <Button type="submit"
+              <Button type="submit" disabled={isLoading}
               className="form-btn">
                 {
                   isLoading ? (
