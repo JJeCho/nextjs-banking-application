@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -24,6 +25,7 @@ const formSchema = z.object({
 });
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,7 +36,13 @@ const AuthForm = ({ type }: { type: string }) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
+
+
     console.log(values);
+
+
+    setIsLoading(false);
   }
   return (
     <section className="auth-form">
@@ -81,7 +89,19 @@ const AuthForm = ({ type }: { type: string }) => {
                 label="Password"
                 placeholder="Enter your password"
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit"
+              className="form-btn">
+                {
+                  isLoading ? (
+                    <>
+                    <Loader2 
+                    size={20}
+                    className="animate-spin"
+                    /> &nbsp;Loading....</>
+                  ) : type ==="sign-in" ?
+                  "Sign In" : "Create Account"
+                }
+              </Button>
             </form>
           </Form>
         </>
