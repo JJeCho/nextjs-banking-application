@@ -2,7 +2,7 @@
 import CustomInput from "@/components/CustomInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { signUp } from "@/lib/actions/user.actions";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 import { authFormSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -33,7 +33,12 @@ const AuthForm = ({ type }: { type: string }) => {
     setIsLoading(true);
     try{
       if (type === "sign-in") { 
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        })
 
+        if(response) router.push('/')
       }
       if (type === "sign-up") {
         const newUser = await signUp(data)
